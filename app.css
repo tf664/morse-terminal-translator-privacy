@@ -1,0 +1,910 @@
+/* 1. IMPORTS & GLOBAL OVERRIDES */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+/* Fix Flowbite font overrides */
+:global(.custom-range) {
+    font-family: 'VT323', 'Fira Mono', 'Consolas', monospace !important;
+}
+
+:global([class*="flowbite"]) {
+    font-family: 'VT323', 'Fira Mono', 'Consolas', monospace !important;
+}
+
+:global(.range-slider) {
+    font-family: 'VT323', 'Fira Mono', 'Consolas', monospace !important;
+}
+
+/* 2. THEME VARIANTS */
+:root,
+:root[data-theme="forest"] {
+    --crt-bg: #000;
+    --crt-font: 'VT323', 'Fira Mono', 'Consolas', monospace;
+    --crt-glow: #39ff14;
+    --crt-glow-rgb: 57, 255, 20;
+    --crt-text: #39ff14;
+    --crt-border: #39ff14;
+    --crt-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor;
+    --crt-cursor: #39ff14;
+    --scanline-opacity: 0.03;
+    --flicker-intensity: 0.98;
+    --bloom-intensity: 1.5;
+}
+
+:root[data-theme="amber"] {
+    --crt-bg: #000;
+    --crt-font: 'VT323', 'Fira Mono', 'Consolas', monospace;
+    --crt-glow: #ffb300;
+    --crt-glow-rgb: 255, 179, 0;
+    --crt-text: #ffcc00;
+    --crt-border: #ffb300;
+    --crt-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor;
+    --crt-cursor: #ffcc00;
+    --scanline-opacity: 0.04;
+    --flicker-intensity: 0.98;
+    --bloom-intensity: 1.5;
+}
+
+:root[data-theme="arctic"] {
+    --crt-bg: #000;
+    --crt-font: 'VT323', 'Fira Mono', 'Consolas', monospace;
+    --crt-glow: #e0e0e0;
+    --crt-glow-rgb: 224, 224, 224;
+    --crt-text: #f0f0f0;
+    --crt-border: #e0e0e0;
+    --crt-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor;
+    --crt-cursor: #f0f0f0;
+    --scanline-opacity: 0.05;
+    --flicker-intensity: 0.98;
+    --bloom-intensity: 1.5;
+}
+
+:root[data-theme="portal"] {
+    --crt-bg: #000;
+    --crt-font: 'VT323', 'Fira Mono', 'Consolas', monospace;
+    --crt-glow: #5d00b3;
+    --crt-glow-rgb: 93, 0, 179;
+    --crt-text: #8a2be2;
+    --crt-border: #5d00b3;
+    --crt-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor;
+    --crt-cursor: #8a2be2;
+    --scanline-opacity: 0.04;
+    --flicker-intensity: 0.98;
+    --bloom-intensity: 1.5;
+}
+
+:root[data-theme="crimson"] {
+    --crt-bg: #000;
+    --crt-font: 'VT323', 'Fira Mono', 'Consolas', monospace;
+    --crt-glow: #ff0a14;
+    --crt-glow-rgb: 255, 10, 20;
+    --crt-text: #ff3333;
+    --crt-border: #ff0a14;
+    --crt-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor;
+    --crt-cursor: #ff3333;
+    --scanline-opacity: 0.04;
+    --flicker-intensity: 0.98;
+    --bloom-intensity: 1.5;
+}
+
+:root[data-theme="flamingo"] {
+    --crt-bg: #000;
+    --crt-font: 'VT323', 'Fira Mono', 'Consolas', monospace;
+    --crt-glow: #ff66ff;
+    --crt-glow-rgb: 255, 102, 255;
+    --crt-text: #ff99ff;
+    --crt-border: #ff66ff;
+    --crt-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor;
+    --crt-cursor: #ff99ff;
+    --scanline-opacity: 0.04;
+    --flicker-intensity: 0.98;
+    --bloom-intensity: 1.5;
+}
+
+/* 3. BASE LAYOUT */
+html,
+body {
+    background: #000;
+    color: var(--crt-text);
+    font-family: var(--crt-font);
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    letter-spacing: 0.1em;
+}
+
+body {
+    position: relative;
+    background:
+        radial-gradient(ellipse at center, #111 0%, #000 100%),
+        repeating-linear-gradient(0deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.01) 2px,
+            rgba(255, 255, 255, 0.01) 4px);
+}
+
+/* 4. SCROLLBAR CONFIGURATION */
+/* Global default scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--crt-glow);
+    border-radius: 4px;
+    box-shadow: 0 0 8px var(--crt-glow);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--crt-border);
+}
+
+/* Hidden body scrollbar for main page */
+body::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+/* Firefox scrollbar support */
+body {
+    scrollbar-width: none;
+}
+
+/* Terminal textarea always visible scrollbars */
+.terminal-textarea::-webkit-scrollbar {
+    width: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+}
+
+.terminal-textarea::-webkit-scrollbar-thumb {
+    background: var(--crt-glow);
+    border-radius: 4px;
+    box-shadow: 0 0 8px var(--crt-glow);
+}
+
+.terminal-textarea::-webkit-scrollbar-thumb:hover {
+    background: var(--crt-border);
+}
+
+.terminal-textarea {
+    scrollbar-width: thin;
+    scrollbar-color: var(--crt-glow) rgba(0, 0, 0, 0.5);
+}
+
+/* 5. CRT VISUAL EFFECTS */
+.crt-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--crt-bg);
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow:
+        inset 0 0 100px rgba(0, 0, 0, 0.8),
+        0 0 50px rgba(0, 0, 0, 0.9);
+    filter: contrast(1.1) brightness(1.1);
+}
+
+.crt-phosphor {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at center,
+            rgba(var(--crt-glow-rgb, 255, 179, 0), 0.15) 0%,
+            transparent 60%),
+        radial-gradient(ellipse 100% 80% at 50% 0%,
+            rgba(var(--crt-glow-rgb, 255, 179, 0), 0.1) 0%,
+            transparent 70%);
+    mix-blend-mode: screen;
+    filter: blur(var(--bloom-intensity, 1.5px));
+    animation: phosphorFlicker 4s infinite alternate;
+}
+
+.crt-vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center,
+            rgba(0, 0, 0, 0) 60%,
+            rgba(0, 0, 0, 0.5) 100%);
+    border-radius: 12px;
+    mix-blend-mode: multiply;
+    filter: blur(1px);
+}
+
+.crt-burnin {
+    position: fixed;
+    inset: 0;
+    z-index: 9997;
+    background:
+        radial-gradient(ellipse 60% 80% at 50% 45%,
+            rgba(var(--crt-glow-rgb, 255, 179, 0), 0.15) 0%,
+            rgba(var(--crt-glow-rgb, 255, 179, 0), 0.05) 40%,
+            transparent 70%),
+        linear-gradient(90deg,
+            transparent 0%,
+            rgba(var(--crt-glow-rgb, 255, 179, 0), 0.02) 20%,
+            rgba(var(--crt-glow-rgb, 255, 179, 0), 0.03) 50%,
+            rgba(var(--crt-glow-rgb, 255, 179, 0), 0.02) 80%,
+            transparent 100%);
+    animation: burnin 15s ease-in-out infinite alternate;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    border-radius: 18px;
+}
+
+/* 6. CONDITIONAL CRT EFFECTS */
+/* Remove default effects - they only show when enabled */
+body::before {
+    display: none;
+}
+
+body {
+    animation: none;
+}
+
+/* Enable effects conditionally */
+body.scanlines-enabled::before {
+    display: block;
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg,
+            transparent 0px,
+            transparent 3px,
+            rgba(255, 255, 255, var(--scanline-opacity)) 3px,
+            rgba(255, 255, 255, var(--scanline-opacity)) 6px);
+    animation: scanlines 0.3s linear infinite;
+}
+
+body.glow-enabled .main-terminal {
+    box-shadow:
+        0 0 30px var(--crt-glow),
+        0 0 60px rgba(var(--crt-glow-rgb, 255, 179, 0), 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.8);
+}
+
+body.glow-enabled .terminal-input,
+body.glow-enabled .terminal-textarea {
+    text-shadow: 0 0 5px currentColor;
+}
+
+body.glow-enabled .terminal-textarea:focus {
+    box-shadow:
+        0 0 20px var(--crt-glow),
+        0 0 40px rgba(var(--crt-glow-rgb, 255, 179, 0), 0.3),
+        inset 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+body.flicker-enabled {
+    animation: flicker 8s infinite;
+}
+
+body.flicker-enabled .main-terminal {
+    animation: flicker 8s infinite;
+}
+
+body.vignette-enabled .crt-vignette {
+    background: radial-gradient(ellipse at center,
+            rgba(0, 0, 0, 0) 60%,
+            rgba(0, 0, 0, 0.5) 100%);
+}
+
+/* 7. APP CONTAINER */
+.app {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+}
+
+main {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.app::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(ellipse 120% 100% at 50% 50%,
+            rgba(var(--crt-glow-rgb, 255, 179, 0), 0.03) 0%,
+            transparent 70%);
+    border-radius: 12px;
+    transform: perspective(400px) rotateX(1deg);
+    filter: blur(0.5px);
+}
+
+/* 8. MAIN TERMINAL WINDOW */
+.main-terminal {
+    max-width: 38rem;
+    width: 100%;
+    margin: 1.5rem 0;
+    padding: 2rem 1.5rem;
+    min-height: 24rem;
+    gap: 1rem;
+    background:
+        rgba(0, 0, 0, 0.9),
+        radial-gradient(ellipse at center,
+            rgba(var(--crt-glow-rgb, 255, 179, 0), 0.05) 0%,
+            transparent 70%);
+    border: 1px solid var(--crt-border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-terminal::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(90deg,
+            transparent 0px,
+            rgba(var(--crt-glow-rgb, 255, 179, 0), 0.02) 1px,
+            transparent 2px);
+    pointer-events: none;
+}
+
+/* 9. INPUT ROWS */
+.input-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+/* 10. INPUTS & TEXTAREAS */
+.terminal-input,
+.terminal-textarea {
+    width: 100%;
+    max-width: 30rem;
+    min-height: 3.5em;
+    resize: none;
+    padding: 0.8em 1em;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--crt-border);
+    color: var(--crt-text);
+    font-family: var(--crt-font);
+    font-size: 1rem;
+    border-radius: 4px;
+    box-shadow:
+        0 0 10px var(--crt-glow),
+        inset 0 0 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 5px currentColor;
+    transition: all 0.3s ease;
+    line-height: 1.4;
+}
+
+.terminal-textarea:focus {
+    border: 1px solid var(--crt-text);
+    box-shadow:
+        0 0 20px var(--crt-glow),
+        0 0 40px rgba(var(--crt-glow-rgb, 255, 179, 0), 0.3),
+        inset 0 1px 2px rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.95);
+    animation: textGlow 2s ease-in-out infinite alternate;
+}
+
+/* 11. BUTTONS */
+.terminal-btn {
+    width: 100%;
+    max-width: 16rem;
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--crt-text);
+    border: 1px solid var(--crt-border);
+    font-family: var(--crt-font);
+    font-size: 1.3rem;
+    padding: 0.4em 1.5em;
+    border-radius: 4px;
+    cursor: pointer;
+    text-shadow: 0 0 5px currentColor;
+    box-shadow:
+        0 0 10px var(--crt-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.8);
+    transition: all 0.3s ease;
+    position: relative;
+    letter-spacing: 0.05em;
+    margin-bottom: -0.5rem;
+}
+
+.icon-btn {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s;
+    box-shadow: 0 0 8px var(--crt-glow);
+    color: var(--crt-text);
+}
+
+/* 12. TOGGLE SWITCHES */
+.toggle-row {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5rem 0;
+    min-height: 2.5rem;
+}
+
+.switch-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.switch-input {
+    display: none;
+}
+
+.switch-slider {
+    width: 3rem;
+    height: 1.6rem;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--crt-border);
+    border-radius: 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow:
+        0 0 8px var(--crt-glow),
+        inset 0 2px 4px rgba(0, 0, 0, 0.8);
+    flex-shrink: 0;
+}
+
+.switch-input:checked+.switch-slider {
+    background: rgba(var(--crt-glow-rgb, 255, 179, 0), 0.3);
+    box-shadow:
+        0 0 15px var(--crt-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    animation: textGlow 2s ease-in-out infinite alternate;
+}
+
+.switch-slider::before {
+    content: '';
+    position: absolute;
+    left: 0.15rem;
+    top: 0.15rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    background: var(--crt-text);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow:
+        0 0 8px currentColor,
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.switch-input:checked+.switch-slider::before {
+    transform: translateX(1.4rem);
+    box-shadow:
+        0 0 12px currentColor,
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.switch-text {
+    color: var(--crt-text);
+    font-family: var(--crt-font);
+    font-size: 1.1rem;
+    text-shadow: 0 0 8px currentColor;
+    letter-spacing: 0.05em;
+    flex: 1;
+}
+
+/* 13. SETTINGS SECTIONS */
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 32rem;
+    margin: 0 auto 2rem auto;
+    padding: 0.3rem 0;
+    min-height: 2.5rem;
+}
+
+.settings-section label {
+    color: var(--crt-text);
+    font-family: var(--crt-font);
+    font-size: 1.2rem;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 8px currentColor;
+    margin-bottom: 0.3rem;
+}
+
+.settings-section select {
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--crt-text);
+    border: 1px solid var(--crt-border);
+    font-family: var(--crt-font);
+    font-size: 1.1rem;
+    border-radius: 4px;
+    padding: 0.4em 0.8em;
+    outline: none;
+    box-shadow:
+        0 0 8px var(--crt-glow),
+        inset 0 1px 2px rgba(0, 0, 0, 0.8);
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px currentColor;
+    letter-spacing: 0.05em;
+}
+
+.settings-section select:focus {
+    border: 1px solid var(--crt-text);
+    box-shadow:
+        0 0 15px var(--crt-glow),
+        inset 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.settings-section option {
+    background: rgba(0, 0, 0, 0.95);
+    color: var(--crt-text);
+    font-family: var(--crt-font);
+}
+
+/* 14. SLIDERS */
+.slider-section input[type="range"],
+.slider-section .range input {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 8px var(--crt-glow);
+    outline: none;
+    margin: 0.5rem 0;
+}
+
+.slider-section input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 8px var(--crt-glow);
+}
+
+.slider-section input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--crt-glow);
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--crt-glow);
+    margin-top: -5px;
+    transition: all 0.2s ease;
+}
+
+.slider-section input[type="range"]:hover::-webkit-slider-thumb {
+    box-shadow: 0 0 15px var(--crt-glow);
+}
+
+.slider-section input[type="range"]::-moz-range-track {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 8px var(--crt-glow);
+}
+
+.slider-section input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--crt-glow);
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--crt-glow);
+    border: none;
+}
+
+.slider-section label {
+    font-family: var(--crt-font);
+    color: var(--crt-text);
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+.slider-section .range-value {
+    font-family: var(--crt-font);
+    color: var(--crt-text);
+    font-size: 1.1rem;
+    margin-left: 0.5rem;
+}
+
+/* 15. HEADINGS */
+h1,
+.settings-title {
+    color: var(--crt-text);
+    text-shadow:
+        0 0 10px currentColor,
+        0 0 20px currentColor,
+        0 0 30px rgba(var(--crt-glow-rgb, 255, 179, 0), 0.5);
+    font-family: var(--crt-font);
+    font-size: 2.8rem;
+    text-align: center;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    animation: flicker 3s infinite alternate;
+    font-weight: normal;
+}
+
+/* 16. HEADER */
+.vhs-header {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom: 2px solid var(--crt-border);
+    box-shadow:
+        0 0 10px var(--crt-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    padding: 1rem 0;
+    font-family: var(--crt-font);
+    position: relative;
+}
+
+.vhs-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(var(--crt-glow-rgb, 255, 179, 0), 0.1) 0%,
+            transparent 100%);
+    pointer-events: none;
+}
+
+.vhs-header nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.vhs-header nav ul li a {
+    color: var(--crt-text);
+    text-decoration: none;
+    text-shadow: var(--crt-shadow);
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+.vhs-header nav ul li a:hover {
+    background: rgba(var(--crt-glow-rgb, 255, 179, 0), 0.2);
+    text-shadow: 0 0 20px currentColor;
+}
+
+/* 17. FOOTER */
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    font-size: 0.9rem;
+    text-shadow: var(--crt-shadow);
+}
+
+/* 18. RESPONSIVE DESIGN */
+/* Mobile optimizations */
+@media (max-width: 480px) {
+    body.scanlines-enabled::before {
+        background: repeating-linear-gradient(0deg,
+                transparent 0px,
+                transparent 4px,
+                rgba(255, 255, 255, var(--scanline-opacity)) 4px,
+                rgba(255, 255, 255, var(--scanline-opacity)) 8px);
+    }
+
+    body.glow-enabled .main-terminal {
+        box-shadow:
+            0 0 40px var(--crt-glow),
+            0 0 80px rgba(var(--crt-glow-rgb, 255, 179, 0), 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.8);
+    }
+
+    body.vignette-enabled .crt-vignette {
+        background: radial-gradient(ellipse at center,
+                rgba(0, 0, 0, 0) 50%,
+                rgba(0, 0, 0, 0.6) 100%);
+    }
+
+    .terminal-input,
+    .terminal-textarea {
+        text-shadow: 0 0 8px currentColor, 0 0 12px currentColor;
+        box-shadow:
+            0 0 15px var(--crt-glow),
+            inset 0 1px 2px rgba(0, 0, 0, 0.8),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .terminal-textarea:focus {
+        box-shadow:
+            0 0 30px var(--crt-glow),
+            0 0 50px rgba(var(--crt-glow-rgb, 255, 179, 0), 0.4),
+            inset 0 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    h1,
+    .settings-title {
+        text-shadow:
+            0 0 15px currentColor,
+            0 0 25px currentColor,
+            0 0 40px rgba(var(--crt-glow-rgb, 255, 179, 0), 0.6);
+    }
+
+    .switch-slider {
+        box-shadow:
+            0 0 12px var(--crt-glow),
+            inset 0 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .switch-input:checked+.switch-slider {
+        box-shadow:
+            0 0 20px var(--crt-glow),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .icon-btn {
+        box-shadow: 0 0 15px var(--crt-glow);
+    }
+}
+
+/* Large screens */
+@media (min-width: 768px) {
+    main,
+    .settings-section {
+        max-width: 36rem;
+        padding: 2.5rem;
+    }
+
+    .terminal-input,
+    .terminal-textarea {
+        font-size: 1.5rem;
+        min-height: 6em;
+        padding: 1.2em 1em;
+    }
+}
+
+/* 19. ANIMATIONS */
+@keyframes scanlines {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(6px);
+    }
+}
+
+@keyframes flicker {
+    0%, 93%, 100% {
+        opacity: 1;
+    }
+    94% {
+        opacity: 0.97;
+    }
+    95% {
+        opacity: 0.96;
+    }
+    96% {
+        opacity: 0.95;
+    }
+    97% {
+        opacity: 0.97;
+    }
+    98% {
+        opacity: 0.99;
+    }
+    99% {
+        opacity: 0.99;
+    }
+}
+
+@keyframes textGlow {
+    0%, 100% {
+        text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+    }
+    50% {
+        text-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+    }
+}
+
+@keyframes burnin {
+    0% {
+        opacity: 0.01;
+    }
+    50% {
+        opacity: 0.05;
+    }
+    100% {
+        opacity: 0.02;
+    }
+}
+
+@keyframes phosphorFlicker {
+    0%, 100% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.96;
+    }
+    50% {
+        opacity: 0.90;
+    }
+    75% {
+        opacity: 0.97;
+    }
+}
+
+@keyframes powerOn {
+    0% {
+        transform: scaleY(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scaleY(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+/* 20. ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    body.flicker-enabled,
+    body.flicker-enabled .main-terminal,
+    h1,
+    .settings-title,
+    .crt-phosphor,
+    .crt-burnin {
+        animation: none !important;
+    }
+}

@@ -1,59 +1,206 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="amber">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="app.css" />
   <title>Datenschutzerklärung – Morse Translator</title>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      line-height: 1.6;
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      color: #222;
-    }
-    h1, h2 {
-      color: #003366;
-    }
-    footer {
-      margin-top: 2rem;
-      font-size: 0.9em;
-      color: #555;
-    }
-  </style>
 </head>
-<body>
-  <h1>Datenschutzerklärung</h1>
 
-  <p><strong>App-Name:</strong> Morse Translator<br>
-  <strong>Entwickler:</strong> Max Mustermann</p>
+<body class="scanlines-enabled glow-enabled vignette-enabled">
+  <!-- CRT overlays (visual only) -->
+  <div class="crt-screen" aria-hidden="true"></div>
+  <div class="crt-phosphor" aria-hidden="true"></div>
+  <div class="crt-burnin" aria-hidden="true"></div>
+  <div class="crt-vignette" aria-hidden="true"></div>
 
-  <h2>Allgemeines</h2>
-  <p>
-    Diese App erhebt, speichert oder verarbeitet keine personenbezogenen Daten der Nutzerinnen und Nutzer.
-  </p>
+  <div class="app">
+    <!-- Header row with app name + controls -->
+    <header class="vhs-header" role="banner">
+      <nav>
+        <ul>
+          <li><a href="#" aria-current="page" id="appName">Morse Terminal Translator</a></li>
+        </ul>
+      </nav>
 
-  <h2>Lokale Datenspeicherung</h2>
-  <p>
-    Die App speichert ausschließlich lokale Einstellungen (z.&nbsp;B. Sprache oder Nutzerpräferenzen)
-    auf dem Gerät. Diese Daten werden nicht an den Entwickler oder Dritte übermittelt.
-  </p>
+      <div style="display:flex;justify-content:center;gap:1rem;margin-top:0.6rem;align-items:center;">
+        <label style="color:var(--crt-text);font-family:var(--crt-font);">
+          <span style="display:block;text-align:center;font-size:0.9rem;margin-bottom:0.25rem;">Language</span>
+          <select id="langSelect" class="switch-input" aria-label="Select language">
+            <option value="de">Deutsch</option>
+            <option value="en">English</option>
+          </select>
+        </label>
 
-  <h2>Internetverbindung</h2>
-  <p>
-    Die App kann eine Internetverbindung nutzen, um App-Inhalte zu laden.
-    Es werden keine personenbezogenen Daten an Server, Analyse- oder Werbedienste übertragen.
-  </p>
+        <label style="color:var(--crt-text);font-family:var(--crt-font);">
+          <span style="display:block;text-align:center;font-size:0.9rem;margin-bottom:0.25rem;">Theme</span>
+          <select id="themeSelect" class="switch-input" aria-label="Select theme">
+            <option value="amber">Amber</option>
+            <option value="forest">Forest</option>
+            <option value="arctic">Arctic</option>
+            <option value="portal">Portal</option>
+            <option value="crimson">Crimson</option>
+            <option value="flamingo">Flamingo</option>
+          </select>
+        </label>
+      </div>
+    </header>
 
-  <h2>Kontakt</h2>
-  <p>
-    Bei Fragen zur App oder zum Datenschutz wenden Sie sich bitte an:<br>
-    📧 <a href="mailto:morse@example.com">morse@example.com</a>
-  </p>
+    <main>
+      <h1 id="mainTitle">Datenschutzerklärung</h1>
 
-  <footer>
-    <p>Stand: Oktober 2025</p>
-  </footer>
+      <p id="appMeta">
+        <strong id="metaAppLabel">App-Name:</strong> <span id="metaApp">Morse Terminal Translator</span><br>
+        <strong id="metaDevLabel">Entwickler:</strong> <span id="metaDev">Til Feldkamp</span>
+      </p>
+
+      <section>
+        <h2 id="generalTitle">Allgemeines</h2>
+        <p id="generalText">
+          Diese App erhebt, speichert oder verarbeitet keine personenbezogenen Daten der Nutzerinnen und Nutzer.
+        </p>
+      </section>
+
+      <section>
+        <h2 id="localTitle">Lokale Datenspeicherung</h2>
+        <p id="localText">
+          Die App speichert ausschließlich lokale Einstellungen (z.&nbsp;B. Sprache oder Nutzerpräferenzen)
+          auf dem Gerät. Diese Daten werden nicht an den Entwickler oder Dritte übermittelt.
+        </p>
+      </section>
+
+      <section>
+        <h2 id="internetTitle">Internetverbindung</h2>
+        <p id="internetText">
+          Die App kann eine Internetverbindung nutzen, um App-Inhalte zu laden.
+          Es werden keine personenbezogenen Daten an Server, Analyse- oder Werbedienste übertragen.
+        </p>
+      </section>
+
+      <section>
+        <h2 id="contactTitle">Kontakt</h2>
+        <p id="contactText">
+          Bei Fragen zur App oder zum Datenschutz wenden Sie sich bitte an:<br>
+          📧 <a id="contactEmail" href="mailto:krowastudios@gmail.com">krowastudios@gmail.com</a>
+        </p>
+      </section>
+
+      <footer>
+        <p id="footerDate">Stand: Oktober 2025</p>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Minimal translations and controls for language + theme
+    (function () {
+      const translations = {
+        de: {
+          mainTitle: "Datenschutzerklärung",
+          metaAppLabel: "App-Name:",
+          metaApp: "Morse Terminal Translator",
+          metaDevLabel: "Entwickler:",
+          metaDev: "Til Feldkamp",
+          generalTitle: "Allgemeines",
+          generalText: "Diese App erhebt, speichert oder verarbeitet keine personenbezogenen Daten der Nutzerinnen und Nutzer.",
+          localTitle: "Lokale Datenspeicherung",
+          localText: "Die App speichert ausschließlich lokale Einstellungen (z.\u00A0B. Sprache oder Nutzerpräferenzen) auf dem Gerät. Diese Daten werden nicht an den Entwickler oder Dritte übermittelt.",
+          internetTitle: "Internetverbindung",
+          internetText: "Die App kann eine Internetverbindung nutzen, um App-Inhalte zu laden. Es werden keine personenbezogenen Daten an Server, Analyse- oder Werbedienste übertragen.",
+          contactTitle: "Kontakt",
+          contactText: "Bei Fragen zur App oder zum Datenschutz wenden Sie sich bitte an:",
+          contactEmail: "krowastudios@gmail.com",
+          footerDate: "Stand: Oktober 2025",
+          appName: "Morse Terminal Translator"
+        },
+        en: {
+          mainTitle: "Privacy Policy",
+          metaAppLabel: "App name:",
+          metaApp: "Morse Terminal Translator",
+          metaDevLabel: "Developer:",
+          metaDev: "Til Feldkamp",
+          generalTitle: "General",
+          generalText: "This app does not collect, store or process any personal data of its users.",
+          localTitle: "Local Data Storage",
+          localText: "The app only stores local settings (e.g. language or user preferences) on the device. These data are not transmitted to the developer or third parties.",
+          internetTitle: "Internet Connection",
+          internetText: "The app may use an internet connection to load app content. No personal data is transmitted to servers, analytics or advertising services.",
+          contactTitle: "Contact",
+          contactText: "If you have questions about the app or data protection, please contact:",
+          contactEmail: "krowastudios@gmail.com",
+          footerDate: "As of: October 2025",
+          appName: "Morse Terminal Translator"
+        }
+      };
+
+      const elems = {
+        mainTitle: document.getElementById("mainTitle"),
+        metaAppLabel: document.getElementById("metaAppLabel"),
+        metaApp: document.getElementById("metaApp"),
+        metaDevLabel: document.getElementById("metaDevLabel"),
+        metaDev: document.getElementById("metaDev"),
+        generalTitle: document.getElementById("generalTitle"),
+        generalText: document.getElementById("generalText"),
+        localTitle: document.getElementById("localTitle"),
+        localText: document.getElementById("localText"),
+        internetTitle: document.getElementById("internetTitle"),
+        internetText: document.getElementById("internetText"),
+        contactTitle: document.getElementById("contactTitle"),
+        contactText: document.getElementById("contactText"),
+        contactEmail: document.getElementById("contactEmail"),
+        footerDate: document.getElementById("footerDate"),
+        appName: document.getElementById("appName")
+      };
+
+      const langSelect = document.getElementById("langSelect");
+      const themeSelect = document.getElementById("themeSelect");
+
+      function applyLanguage(lang) {
+        const t = translations[lang] || translations.de;
+        document.documentElement.lang = lang;
+        elems.mainTitle.textContent = t.mainTitle;
+        elems.metaAppLabel.textContent = t.metaAppLabel;
+        elems.metaApp.textContent = t.metaApp;
+        elems.metaDevLabel.textContent = t.metaDevLabel;
+        elems.metaDev.textContent = t.metaDev;
+        elems.generalTitle.textContent = t.generalTitle;
+        elems.generalText.textContent = t.generalText;
+        elems.localTitle.textContent = t.localTitle;
+        elems.localText.textContent = t.localText;
+        elems.internetTitle.textContent = t.internetTitle;
+        elems.internetText.textContent = t.internetText;
+        elems.contactTitle.textContent = t.contactTitle;
+        // preserve the <br> + link structure: replace first text node
+        if (elems.contactText.childNodes && elems.contactText.childNodes[0]) {
+          elems.contactText.childNodes[0].textContent = t.contactText + "\n";
+        }
+        elems.contactEmail.textContent = t.contactEmail;
+        elems.contactEmail.href = "mailto:" + t.contactEmail;
+        elems.footerDate.textContent = t.footerDate;
+        elems.appName.textContent = t.appName;
+        localStorage.setItem("mtt-lang", lang);
+        langSelect.value = lang;
+      }
+
+      function applyTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("mtt-theme", theme);
+        themeSelect.value = theme;
+      }
+
+      // Initialize from storage or defaults
+      const storedLang = localStorage.getItem("mtt-lang") || (navigator.language && navigator.language.startsWith("en") ? "en" : "de");
+      const storedTheme = localStorage.getItem("mtt-theme") || document.documentElement.getAttribute("data-theme") || "amber";
+
+      applyLanguage(storedLang);
+      applyTheme(storedTheme);
+
+      // Event handlers
+      langSelect.addEventListener("change", () => applyLanguage(langSelect.value));
+      themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
+    })();
+  </script>
 </body>
+
 </html>
