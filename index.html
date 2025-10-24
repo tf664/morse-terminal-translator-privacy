@@ -1,3 +1,4 @@
+// ...existing code...
 <!DOCTYPE html>
 <html lang="de" data-theme="amber">
 
@@ -6,6 +7,128 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="app.css" />
   <title>Datenschutzerklärung – Morse Translator</title>
+
+  <style>
+    /* Header / controls compact styling */
+    .vhs-header {
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      width: 100%;
+      box-sizing: border-box;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: linear-gradient(180deg, rgba(0,0,0,0.35), transparent);
+      backdrop-filter: blur(1px);
+    }
+
+    .vhs-header nav ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .vhs-header nav ul li a {
+      font-size: 1.15rem;
+      letter-spacing: 0.12em;
+      color: var(--crt-text);
+      text-decoration: none;
+      padding: 4px 8px;
+      display:inline-block;
+    }
+
+    .header-controls {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    /* compact theme select */
+    .select-compact {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 6px 8px;
+      font-family: var(--crt-font);
+      font-size: 0.85rem;
+      color: var(--crt-text);
+      border-radius: 6px;
+      min-width: 120px;
+      text-align: center;
+      box-shadow: 0 0 6px rgba(var(--crt-glow-rgb,0,0,0), 0.08);
+    }
+
+    /* small switches */
+    .switch-label {
+      display:flex;
+      gap:8px;
+      align-items:center;
+      font-size:0.78rem;
+    }
+
+    .switch-label .switch-input {
+      transform: scale(0.85);
+      margin: 0;
+      width: 1.25em;
+      height: 1.25em;
+    }
+
+    .switch-text {
+      display:none; /* hide text to keep compact — icons would be ideal */
+    }
+
+    /* small segmented language toggle */
+    .lang-toggle {
+      display:inline-flex;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.15);
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.35);
+    }
+
+    .lang-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      padding: 6px 10px;
+      min-width: 44px;
+      border: 0;
+      background: transparent;
+      color: var(--crt-text);
+      font-family: var(--crt-font);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: background .14s ease, color .14s ease, transform .06s ease;
+    }
+
+    .lang-btn:not(:last-child) {
+      border-right: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(90deg, rgba(var(--crt-glow-rgb),0.12), rgba(var(--crt-glow-rgb),0.08));
+      color: #000;
+      text-shadow: none;
+      box-shadow: 0 0 10px rgba(var(--crt-glow-rgb), 0.18);
+      transform: translateY(-1px);
+    }
+
+    /* keep header compact on narrow screens */
+    @media (max-width: 480px) {
+      .vhs-header { padding: 8px 10px; }
+      .lang-btn { padding: 5px 8px; font-size:0.8rem; }
+      .select-compact { min-width: 100px; padding:5px 6px; font-size:0.8rem; }
+      .switch-label { font-size:0.72rem; gap:6px; }
+    }
+  </style>
 </head>
 
 <body class="scanlines-enabled glow-enabled vignette-enabled">
@@ -24,18 +147,15 @@
         </ul>
       </nav>
 
-      <div style="display:flex;justify-content:center;gap:1rem;margin-top:0.6rem;align-items:center;">
-        <label style="color:var(--crt-text);font-family:var(--crt-font);">
-          <span style="display:block;text-align:center;font-size:0.9rem;margin-bottom:0.25rem;">Language</span>
-          <select id="langSelect" class="switch-input" aria-label="Select language">
-            <option value="de">Deutsch</option>
-            <option value="en">English</option>
-          </select>
-        </label>
+      <!-- stylized controls: compact language toggle + theme select + small effect toggles -->
+      <div class="settings-section header-controls">
+        <div class="lang-toggle" role="tablist" aria-label="Language switch">
+          <button class="lang-btn" data-lang="de" aria-pressed="false" title="Deutsch">DE</button>
+          <button class="lang-btn" data-lang="en" aria-pressed="false" title="English">EN</button>
+        </div>
 
-        <label style="color:var(--crt-text);font-family:var(--crt-font);">
-          <span style="display:block;text-align:center;font-size:0.9rem;margin-bottom:0.25rem;">Theme</span>
-          <select id="themeSelect" class="switch-input" aria-label="Select theme">
+        <label>
+          <select id="themeSelect" class="select-compact" aria-label="Select theme">
             <option value="amber">Amber</option>
             <option value="forest">Forest</option>
             <option value="arctic">Arctic</option>
@@ -44,143 +164,129 @@
             <option value="flamingo">Flamingo</option>
           </select>
         </label>
+
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label class="switch-label" title="Scanlines">
+            <input id="toggle-scanlines" class="switch-input" type="checkbox" aria-label="Toggle scanlines">
+            <span class="switch-slider" aria-hidden="true"></span>
+          </label>
+
+          <label class="switch-label" title="Glow">
+            <input id="toggle-glow" class="switch-input" type="checkbox" aria-label="Toggle glow">
+            <span class="switch-slider" aria-hidden="true"></span>
+          </label>
+
+          <label class="switch-label" title="Vignette">
+            <input id="toggle-vignette" class="switch-input" type="checkbox" aria-label="Toggle vignette">
+            <span class="switch-slider" aria-hidden="true"></span>
+          </label>
+
+          <label class="switch-label" title="Flicker">
+            <input id="toggle-flicker" class="switch-input" type="checkbox" aria-label="Toggle flicker">
+            <span class="switch-slider" aria-hidden="true"></span>
+          </label>
+        </div>
       </div>
     </header>
 
-    <main>
-      <h1 id="mainTitle">Datenschutzerklärung</h1>
+    <!-- Main content: two separate language blocks. JS will show only one. -->
+    <main id="main-de" data-lang="de">
+      <h1>Datenschutzerklärung</h1>
 
-      <p id="appMeta">
-        <strong id="metaAppLabel">App-Name:</strong> <span id="metaApp">Morse Terminal Translator</span><br>
-        <strong id="metaDevLabel">Entwickler:</strong> <span id="metaDev">Til Feldkamp</span>
+      <p>
+        <strong>App-Name:</strong> Morse Terminal Translator<br>
+        <strong>Entwickler:</strong> Til Feldkamp
       </p>
 
       <section>
-        <h2 id="generalTitle">Allgemeines</h2>
-        <p id="generalText">
-          Diese App erhebt, speichert oder verarbeitet keine personenbezogenen Daten der Nutzerinnen und Nutzer.
-        </p>
+        <h2>Allgemeines</h2>
+        <p>Diese App erhebt, speichert oder verarbeitet keine personenbezogenen Daten der Nutzerinnen und Nutzer.</p>
       </section>
 
       <section>
-        <h2 id="localTitle">Lokale Datenspeicherung</h2>
-        <p id="localText">
-          Die App speichert ausschließlich lokale Einstellungen (z.&nbsp;B. Sprache oder Nutzerpräferenzen)
-          auf dem Gerät. Diese Daten werden nicht an den Entwickler oder Dritte übermittelt.
-        </p>
+        <h2>Lokale Datenspeicherung</h2>
+        <p>Die App speichert ausschließlich lokale Einstellungen (z. B. Sprache oder Nutzerpräferenzen) auf dem Gerät. Diese Daten werden nicht an den Entwickler oder Dritte übermittelt.</p>
       </section>
 
       <section>
-        <h2 id="internetTitle">Internetverbindung</h2>
-        <p id="internetText">
-          Die App kann eine Internetverbindung nutzen, um App-Inhalte zu laden.
-          Es werden keine personenbezogenen Daten an Server, Analyse- oder Werbedienste übertragen.
-        </p>
+        <h2>Internetverbindung</h2>
+        <p>Die App kann eine Internetverbindung nutzen, um App-Inhalte zu laden. Es werden keine personenbezogenen Daten an Server, Analyse- oder Werbedienste übertragen.</p>
       </section>
 
       <section>
-        <h2 id="contactTitle">Kontakt</h2>
-        <p id="contactText">
-          Bei Fragen zur App oder zum Datenschutz wenden Sie sich bitte an:<br>
-          📧 <a id="contactEmail" href="mailto:krowastudios@gmail.com">krowastudios@gmail.com</a>
-        </p>
+        <h2>Kontakt</h2>
+        <p>Bei Fragen zur App oder zum Datenschutz wenden Sie sich bitte an:<br>📧 <a href="mailto:krowastudios@gmail.com">krowastudios@gmail.com</a></p>
       </section>
 
-      <footer>
-        <p id="footerDate">Stand: Oktober 2025</p>
-      </footer>
+      <footer><p>Stand: Oktober 2025</p></footer>
     </main>
+
+    <main id="main-en" data-lang="en" style="display:none;">
+      <h1>Privacy Policy</h1>
+
+      <p>
+        <strong>App name:</strong> Morse Terminal Translator<br>
+        <strong>Developer:</strong> Til Feldkamp
+      </p>
+
+      <section>
+        <h2>General</h2>
+        <p>This app does not collect, store or process any personal data of its users.</p>
+      </section>
+
+      <section>
+        <h2>Local Data Storage</h2>
+        <p>The app only stores local settings (e.g. language or user preferences) on the device. These data are not transmitted to the developer or third parties.</p>
+      </section>
+
+      <section>
+        <h2>Internet Connection</h2>
+        <p>The app may use an internet connection to load app content. No personal data is transmitted to servers, analytics or advertising services.</p>
+      </section>
+
+      <section>
+        <h2>Contact</h2>
+        <p>If you have questions about the app or data protection, please contact:<br>📧 <a href="mailto:krowastudios@gmail.com">krowastudios@gmail.com</a></p>
+      </section>
+
+      <footer><p>As of: October 2025</p></footer>
+    </main>
+
   </div>
 
   <script>
-    // Minimal translations and controls for language + theme
+    // show/hide language blocks + theme + effect toggles (updated for segmented language)
     (function () {
-      const translations = {
-        de: {
-          mainTitle: "Datenschutzerklärung",
-          metaAppLabel: "App-Name:",
-          metaApp: "Morse Terminal Translator",
-          metaDevLabel: "Entwickler:",
-          metaDev: "Til Feldkamp",
-          generalTitle: "Allgemeines",
-          generalText: "Diese App erhebt, speichert oder verarbeitet keine personenbezogenen Daten der Nutzerinnen und Nutzer.",
-          localTitle: "Lokale Datenspeicherung",
-          localText: "Die App speichert ausschließlich lokale Einstellungen (z.\u00A0B. Sprache oder Nutzerpräferenzen) auf dem Gerät. Diese Daten werden nicht an den Entwickler oder Dritte übermittelt.",
-          internetTitle: "Internetverbindung",
-          internetText: "Die App kann eine Internetverbindung nutzen, um App-Inhalte zu laden. Es werden keine personenbezogenen Daten an Server, Analyse- oder Werbedienste übertragen.",
-          contactTitle: "Kontakt",
-          contactText: "Bei Fragen zur App oder zum Datenschutz wenden Sie sich bitte an:",
-          contactEmail: "krowastudios@gmail.com",
-          footerDate: "Stand: Oktober 2025",
-          appName: "Morse Terminal Translator"
-        },
-        en: {
-          mainTitle: "Privacy Policy",
-          metaAppLabel: "App name:",
-          metaApp: "Morse Terminal Translator",
-          metaDevLabel: "Developer:",
-          metaDev: "Til Feldkamp",
-          generalTitle: "General",
-          generalText: "This app does not collect, store or process any personal data of its users.",
-          localTitle: "Local Data Storage",
-          localText: "The app only stores local settings (e.g. language or user preferences) on the device. These data are not transmitted to the developer or third parties.",
-          internetTitle: "Internet Connection",
-          internetText: "The app may use an internet connection to load app content. No personal data is transmitted to servers, analytics or advertising services.",
-          contactTitle: "Contact",
-          contactText: "If you have questions about the app or data protection, please contact:",
-          contactEmail: "krowastudios@gmail.com",
-          footerDate: "As of: October 2025",
-          appName: "Morse Terminal Translator"
-        }
-      };
-
-      const elems = {
-        mainTitle: document.getElementById("mainTitle"),
-        metaAppLabel: document.getElementById("metaAppLabel"),
-        metaApp: document.getElementById("metaApp"),
-        metaDevLabel: document.getElementById("metaDevLabel"),
-        metaDev: document.getElementById("metaDev"),
-        generalTitle: document.getElementById("generalTitle"),
-        generalText: document.getElementById("generalText"),
-        localTitle: document.getElementById("localTitle"),
-        localText: document.getElementById("localText"),
-        internetTitle: document.getElementById("internetTitle"),
-        internetText: document.getElementById("internetText"),
-        contactTitle: document.getElementById("contactTitle"),
-        contactText: document.getElementById("contactText"),
-        contactEmail: document.getElementById("contactEmail"),
-        footerDate: document.getElementById("footerDate"),
-        appName: document.getElementById("appName")
-      };
-
-      const langSelect = document.getElementById("langSelect");
       const themeSelect = document.getElementById("themeSelect");
 
-      function applyLanguage(lang) {
-        const t = translations[lang] || translations.de;
-        document.documentElement.lang = lang;
-        elems.mainTitle.textContent = t.mainTitle;
-        elems.metaAppLabel.textContent = t.metaAppLabel;
-        elems.metaApp.textContent = t.metaApp;
-        elems.metaDevLabel.textContent = t.metaDevLabel;
-        elems.metaDev.textContent = t.metaDev;
-        elems.generalTitle.textContent = t.generalTitle;
-        elems.generalText.textContent = t.generalText;
-        elems.localTitle.textContent = t.localTitle;
-        elems.localText.textContent = t.localText;
-        elems.internetTitle.textContent = t.internetTitle;
-        elems.internetText.textContent = t.internetText;
-        elems.contactTitle.textContent = t.contactTitle;
-        // preserve the <br> + link structure: replace first text node
-        if (elems.contactText.childNodes && elems.contactText.childNodes[0]) {
-          elems.contactText.childNodes[0].textContent = t.contactText + "\n";
+      const mainDe = document.getElementById("main-de");
+      const mainEn = document.getElementById("main-en");
+
+      const toggles = {
+        scanlines: document.getElementById("toggle-scanlines"),
+        glow: document.getElementById("toggle-glow"),
+        vignette: document.getElementById("toggle-vignette"),
+        flicker: document.getElementById("toggle-flicker")
+      };
+
+      const langButtons = Array.from(document.querySelectorAll('.lang-btn'));
+
+      function switchLanguage(lang) {
+        document.documentElement.lang = lang === "en" ? "en" : "de";
+        if (lang === "en") {
+          mainEn.style.display = "block";
+          mainDe.style.display = "none";
+        } else {
+          mainEn.style.display = "none";
+          mainDe.style.display = "block";
         }
-        elems.contactEmail.textContent = t.contactEmail;
-        elems.contactEmail.href = "mailto:" + t.contactEmail;
-        elems.footerDate.textContent = t.footerDate;
-        elems.appName.textContent = t.appName;
+        // update segmented control state
+        langButtons.forEach(btn => {
+          const active = btn.getAttribute('data-lang') === lang;
+          btn.classList.toggle('active', active);
+          btn.setAttribute('aria-pressed', String(active));
+        });
         localStorage.setItem("mtt-lang", lang);
-        langSelect.value = lang;
       }
 
       function applyTheme(theme) {
@@ -189,18 +295,393 @@
         themeSelect.value = theme;
       }
 
-      // Initialize from storage or defaults
+      function setBodyEffectClass(cls, enabled) {
+        if (enabled) document.body.classList.add(cls);
+        else document.body.classList.remove(cls);
+        localStorage.setItem("mtt-effect-" + cls, enabled ? "1" : "0");
+      }
+
+      function initEffectsFromStorage() {
+        const defaults = { "scanlines-enabled": true, "glow-enabled": true, "vignette-enabled": true, "flicker-enabled": false };
+        Object.keys(toggles).forEach(key => {
+          const cls = key + "-enabled";
+          const stored = localStorage.getItem("mtt-effect-" + cls);
+          const enabled = stored === null ? !!defaults[cls] : stored === "1";
+          toggles[key].checked = enabled;
+          setBodyEffectClass(cls, enabled);
+        });
+      }
+
+      // initialize
       const storedLang = localStorage.getItem("mtt-lang") || (navigator.language && navigator.language.startsWith("en") ? "en" : "de");
       const storedTheme = localStorage.getItem("mtt-theme") || document.documentElement.getAttribute("data-theme") || "amber";
 
-      applyLanguage(storedLang);
-      applyTheme(storedTheme);
+      // wire language buttons
+      langButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const lang = btn.getAttribute('data-lang');
+          switchLanguage(lang);
+        });
+      });
 
-      // Event handlers
-      langSelect.addEventListener("change", () => applyLanguage(langSelect.value));
+      switchLanguage(storedLang);
+      applyTheme(storedTheme);
+      initEffectsFromStorage();
+
+      // handlers
       themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
+
+      toggles.scanlines.addEventListener("change", () => setBodyEffectClass("scanlines-enabled", toggles.scanlines.checked));
+      toggles.glow.addEventListener("change", () => setBodyEffectClass("glow-enabled", toggles.glow.checked));
+      toggles.vignette.addEventListener("change", () => setBodyEffectClass("vignette-enabled", toggles.vignette.checked));
+      toggles.flicker.addEventListener("change", () => setBodyEffectClass("flicker-enabled", toggles.flicker.checked));
     })();
   </script>
 </body>
 
 </html>
+// ...existing code...
+```// filepath: c:\Users\tilfe\Desktop\morse-terminal-translator-privacy\index.html
+// ...existing code...
+<!DOCTYPE html>
+<html lang="de" data-theme="amber">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="app.css" />
+  <title>Datenschutzerklärung – Morse Translator</title>
+
+  <style>
+    /* Header / controls compact styling */
+    .vhs-header {
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      width: 100%;
+      box-sizing: border-box;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: linear-gradient(180deg, rgba(0,0,0,0.35), transparent);
+      backdrop-filter: blur(1px);
+    }
+
+    .vhs-header nav ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .vhs-header nav ul li a {
+      font-size: 1.15rem;
+      letter-spacing: 0.12em;
+      color: var(--crt-text);
+      text-decoration: none;
+      padding: 4px 8px;
+      display:inline-block;
+    }
+
+    .header-controls {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    /* compact theme select */
+    .select-compact {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 6px 8px;
+      font-family: var(--crt-font);
+      font-size: 0.85rem;
+      color: var(--crt-text);
+      border-radius: 6px;
+      min-width: 120px;
+      text-align: center;
+      box-shadow: 0 0 6px rgba(var(--crt-glow-rgb,0,0,0), 0.08);
+    }
+
+    /* small switches */
+    .switch-label {
+      display:flex;
+      gap:8px;
+      align-items:center;
+      font-size:0.78rem;
+    }
+
+    .switch-label .switch-input {
+      transform: scale(0.85);
+      margin: 0;
+      width: 1.25em;
+      height: 1.25em;
+    }
+
+    .switch-text {
+      display:none; /* hide text to keep compact — icons would be ideal */
+    }
+
+    /* small segmented language toggle */
+    .lang-toggle {
+      display:inline-flex;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(0,0,0,0.15);
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.35);
+    }
+
+    .lang-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      padding: 6px 10px;
+      min-width: 44px;
+      border: 0;
+      background: transparent;
+      color: var(--crt-text);
+      font-family: var(--crt-font);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: background .14s ease, color .14s ease, transform .06s ease;
+    }
+
+    .lang-btn:not(:last-child) {
+      border-right: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(90deg, rgba(var(--crt-glow-rgb),0.12), rgba(var(--crt-glow-rgb),0.08));
+      color: #000;
+      text-shadow: none;
+      box-shadow: 0 0 10px rgba(var(--crt-glow-rgb), 0.18);
+      transform: translateY(-1px);
+    }
+
+    /* keep header compact on narrow screens */
+    @media (max-width: 480px) {
+      .vhs-header { padding: 8px 10px; }
+      .lang-btn { padding: 5px 8px; font-size:0.8rem; }
+      .select-compact { min-width: 100px; padding:5px 6px; font-size:0.8rem; }
+      .switch-label { font-size:0.72rem; gap:6px; }
+    }
+  </style>
+</head>
+
+<body class="scanlines-enabled glow-enabled vignette-enabled">
+  <!-- CRT overlays (visual only) -->
+  <div class="crt-screen" aria-hidden="true"></div>
+  <div class="crt-phosphor" aria-hidden="true"></div>
+  <div class="crt-burnin" aria-hidden="true"></div>
+  <div class="crt-vignette" aria-hidden="true"></div>
+
+  <div class="app">
+    <!-- Header row with app name + controls -->
+    <header class="vhs-header" role="banner">
+      <nav>
+        <ul>
+          <li><a href="#" aria-current="page" id="appName">Morse Terminal Translator</a></li>
+        </ul>
+      </nav>
+
+      <!-- stylized controls: compact language toggle + theme select + small effect toggles -->
+      <div class="settings-section header-controls">
+        <div class="lang-toggle" role="tablist" aria-label="Language switch">
+          <button class="lang-btn" data-lang="de" aria-pressed="false" title="Deutsch">DE</button>
+          <button class="lang-btn" data-lang="en" aria-pressed="false" title="English">EN</button>
+        </div>
+
+        <label>
+          <select id="themeSelect" class="select-compact" aria-label="Select theme">
+            <option value="amber">Amber</option>
+            <option value="forest">Forest</option>
+            <option value="arctic">Arctic</option>
+            <option value="portal">Portal</option>
+            <option value="crimson">Crimson</option>
+            <option value="flamingo">Flamingo</option>
+          </select>
+        </label>
+
+        <div style="display:flex;gap:8px;align-items:center;">
+          <label class="switch-label" title="Scanlines">
+            <input id="toggle-scanlines" class="switch-input" type="checkbox" aria-label="Toggle scanlines">
+            <span class="switch-slider" aria-hidden="true"></span>
+          </label>
+
+          <label class="switch-label" title="Glow">
+            <input id="toggle-glow" class="switch-input" type="checkbox" aria-label="Toggle glow">
+            <span class="switch-slider" aria-hidden="true"></span>
+          </label>
+
+          <label class="switch-label" title="Vignette">
+            <input id="toggle-vignette" class="switch-input" type="checkbox" aria-label="Toggle vignette">
+            <span class="switch-slider" aria-hidden="true"></span>
+          </label>
+
+          <label class="switch-label" title="Flicker">
+            <input id="toggle-flicker" class="switch-input" type="checkbox" aria-label="Toggle flicker">
+            <span class="switch-slider" aria-hidden="true"></span>
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main content: two separate language blocks. JS will show only one. -->
+    <main id="main-de" data-lang="de">
+      <h1>Datenschutzerklärung</h1>
+
+      <p>
+        <strong>App-Name:</strong> Morse Terminal Translator<br>
+        <strong>Entwickler:</strong> Til Feldkamp
+      </p>
+
+      <section>
+        <h2>Allgemeines</h2>
+        <p>Diese App erhebt, speichert oder verarbeitet keine personenbezogenen Daten der Nutzerinnen und Nutzer.</p>
+      </section>
+
+      <section>
+        <h2>Lokale Datenspeicherung</h2>
+        <p>Die App speichert ausschließlich lokale Einstellungen (z. B. Sprache oder Nutzerpräferenzen) auf dem Gerät. Diese Daten werden nicht an den Entwickler oder Dritte übermittelt.</p>
+      </section>
+
+      <section>
+        <h2>Internetverbindung</h2>
+        <p>Die App kann eine Internetverbindung nutzen, um App-Inhalte zu laden. Es werden keine personenbezogenen Daten an Server, Analyse- oder Werbedienste übertragen.</p>
+      </section>
+
+      <section>
+        <h2>Kontakt</h2>
+        <p>Bei Fragen zur App oder zum Datenschutz wenden Sie sich bitte an:<br>📧 <a href="mailto:krowastudios@gmail.com">krowastudios@gmail.com</a></p>
+      </section>
+
+      <footer><p>Stand: Oktober 2025</p></footer>
+    </main>
+
+    <main id="main-en" data-lang="en" style="display:none;">
+      <h1>Privacy Policy</h1>
+
+      <p>
+        <strong>App name:</strong> Morse Terminal Translator<br>
+        <strong>Developer:</strong> Til Feldkamp
+      </p>
+
+      <section>
+        <h2>General</h2>
+        <p>This app does not collect, store or process any personal data of its users.</p>
+      </section>
+
+      <section>
+        <h2>Local Data Storage</h2>
+        <p>The app only stores local settings (e.g. language or user preferences) on the device. These data are not transmitted to the developer or third parties.</p>
+      </section>
+
+      <section>
+        <h2>Internet Connection</h2>
+        <p>The app may use an internet connection to load app content. No personal data is transmitted to servers, analytics or advertising services.</p>
+      </section>
+
+      <section>
+        <h2>Contact</h2>
+        <p>If you have questions about the app or data protection, please contact:<br>📧 <a href="mailto:krowastudios@gmail.com">krowastudios@gmail.com</a></p>
+      </section>
+
+      <footer><p>As of: October 2025</p></footer>
+    </main>
+
+  </div>
+
+  <script>
+    // show/hide language blocks + theme + effect toggles (updated for segmented language)
+    (function () {
+      const themeSelect = document.getElementById("themeSelect");
+
+      const mainDe = document.getElementById("main-de");
+      const mainEn = document.getElementById("main-en");
+
+      const toggles = {
+        scanlines: document.getElementById("toggle-scanlines"),
+        glow: document.getElementById("toggle-glow"),
+        vignette: document.getElementById("toggle-vignette"),
+        flicker: document.getElementById("toggle-flicker")
+      };
+
+      const langButtons = Array.from(document.querySelectorAll('.lang-btn'));
+
+      function switchLanguage(lang) {
+        document.documentElement.lang = lang === "en" ? "en" : "de";
+        if (lang === "en") {
+          mainEn.style.display = "block";
+          mainDe.style.display = "none";
+        } else {
+          mainEn.style.display = "none";
+          mainDe.style.display = "block";
+        }
+        // update segmented control state
+        langButtons.forEach(btn => {
+          const active = btn.getAttribute('data-lang') === lang;
+          btn.classList.toggle('active', active);
+          btn.setAttribute('aria-pressed', String(active));
+        });
+        localStorage.setItem("mtt-lang", lang);
+      }
+
+      function applyTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("mtt-theme", theme);
+        themeSelect.value = theme;
+      }
+
+      function setBodyEffectClass(cls, enabled) {
+        if (enabled) document.body.classList.add(cls);
+        else document.body.classList.remove(cls);
+        localStorage.setItem("mtt-effect-" + cls, enabled ? "1" : "0");
+      }
+
+      function initEffectsFromStorage() {
+        const defaults = { "scanlines-enabled": true, "glow-enabled": true, "vignette-enabled": true, "flicker-enabled": false };
+        Object.keys(toggles).forEach(key => {
+          const cls = key + "-enabled";
+          const stored = localStorage.getItem("mtt-effect-" + cls);
+          const enabled = stored === null ? !!defaults[cls] : stored === "1";
+          toggles[key].checked = enabled;
+          setBodyEffectClass(cls, enabled);
+        });
+      }
+
+      // initialize
+      const storedLang = localStorage.getItem("mtt-lang") || (navigator.language && navigator.language.startsWith("en") ? "en" : "de");
+      const storedTheme = localStorage.getItem("mtt-theme") || document.documentElement.getAttribute("data-theme") || "amber";
+
+      // wire language buttons
+      langButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const lang = btn.getAttribute('data-lang');
+          switchLanguage(lang);
+        });
+      });
+
+      switchLanguage(storedLang);
+      applyTheme(storedTheme);
+      initEffectsFromStorage();
+
+      // handlers
+      themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
+
+      toggles.scanlines.addEventListener("change", () => setBodyEffectClass("scanlines-enabled", toggles.scanlines.checked));
+      toggles.glow.addEventListener("change", () => setBodyEffectClass("glow-enabled", toggles.glow.checked));
+      toggles.vignette.addEventListener("change", () => setBodyEffectClass("vignette-enabled", toggles.vignette.checked));
+      toggles.flicker.addEventListener("change", () => setBodyEffectClass("flicker-enabled", toggles.flicker.checked));
+    })();
+  </script>
+</body>
+
+</html>
+// ...existing code...
