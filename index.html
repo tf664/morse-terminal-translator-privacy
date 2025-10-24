@@ -36,12 +36,26 @@
 
 <body class="scanlines-enabled glow-enabled vignette-enabled">
     <header>
-        <h1>Morse Terminal Translator</h1>
+        <div>
+            <h1>Morse Terminal Translator</h1>
+        </div>
 
-        <!-- stylized language selector -->
         <div class="lang-switch" role="tablist" aria-label="Language selector">
             <button type="button" class="lang-btn active" data-lang="de" aria-pressed="true" title="Deutsch">DE</button>
             <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English">EN</button>
+        </div>
+
+        <!-- theme selector -->
+        <div class="theme-switch" aria-label="Theme selector">
+            <label for="theme-select" class="visually-hidden">Theme</label>
+            <select id="theme-select" title="Theme">
+                <option value="amber">Amber</option>
+                <option value="forest">Forest</option>
+                <option value="arctic">Arctic</option>
+                <option value="portal">Portal</option>
+                <option value="crimson">Crimson</option>
+                <option value="flamingo">Flamingo</option>
+            </select>
         </div>
     </header>
 
@@ -85,9 +99,9 @@
             <section>
                 <h2><span class="lang de">Kontakt</span><span class="lang en">Contact</span></h2>
                 <p class="lang block de">Bei Fragen zur App oder zum Datenschutz wenden Sie sich bitte an:<br> <a
-                        href="mailto:krowastudios@gmail.com">krowastudios@gmail.com</a></p>
+                        href="mailto:krowastudios@gmail.com" class="mailto">krowastudios@gmail.com</a></p>
                 <p class="lang block en">For questions about the app or privacy, please contact:<br> <a
-                        href="mailto:krowastudios@gmail.com">krowastudios@gmail.com</a></p>
+                        href="mailto:krowastudios@gmail.com" class="mailto">krowastudios@gmail.com</a></p>
             </section>
 
             <footer>
@@ -101,6 +115,7 @@
         // attach to stylized buttons and toggle html.lang-de / html.lang-en classes
         (function () {
             const buttons = document.querySelectorAll('.lang-btn');
+            const themeSelect = document.getElementById('theme-select');
 
             function setLang(lang) {
                 // set HTML lang attribute for accessibility & search
@@ -121,12 +136,31 @@
                 document.title = (lang === 'de') ? 'Morse Terminal Translator – Hauptseite' : 'Morse Terminal Translator – Privacy';
             }
 
+            function setTheme(theme) {
+                if (!theme) return;
+                // apply theme by setting data-theme on root
+                document.documentElement.setAttribute('data-theme', theme);
+                // persist selection
+                try { localStorage.setItem('mtt_theme', theme); } catch (e) { /* ignore */ }
+                // reflect in UI select
+                if (themeSelect) themeSelect.value = theme;
+            }
+
             buttons.forEach(btn => {
                 btn.addEventListener('click', () => setLang(btn.getAttribute('data-lang')));
             });
 
+            if (themeSelect) {
+                themeSelect.addEventListener('change', () => setTheme(themeSelect.value));
+            }
+
             // initialize (default DE)
             setLang('de');
+
+            // initialize theme: try persisted value, fall back to html[data-theme] or amber
+            const savedTheme = (() => { try { return localStorage.getItem('mtt_theme'); } catch (e) { return null } })();
+            const initialTheme = savedTheme || document.documentElement.getAttribute('data-theme') || 'amber';
+            setTheme(initialTheme);
         })();
     </script>
 </body>
