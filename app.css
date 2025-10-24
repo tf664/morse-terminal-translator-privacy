@@ -108,6 +108,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     letter-spacing: 0.08em;
+    font-size: 1.2rem;
 }
 
 /* Center page content horizontally; allow header to stay at top */
@@ -123,24 +124,22 @@ body {
 header {
     width: 100%;
     max-width: 920px;
-    /* position: relative; */
-    /* no longer needed */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 8px 0 18px 0;
     gap: 8px;
-    /* spacing between title and selectors */
 }
 
 /* Title stays centered */
 header h1 {
     margin: 0;
-    font-size: 3rem;
+    font-size: 5rem;
     text-align: center;
     font-weight: normal;
     letter-spacing: 0.12em;
+    text-shadow: 0 0 5px var(--crt-glow), 0 0 10px var(--crt-glow);
 }
 
 /* Language switch: placed below the title now */
@@ -156,7 +155,6 @@ header h1 {
     border-radius: 999px;
     align-items: center;
     margin-top: 0;
-    /* header gap handles spacing */
 }
 
 /* Theme selector near the header (also stacked under the title) */
@@ -171,49 +169,37 @@ header h1 {
     margin-top: 0;
 }
 
-/* remove the desktop/right-positioning tweak from the responsive rules */
+/* Combined responsive small-screen tweaks */
 @media (max-width: 520px) {
     header h1 {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
     }
 
     .content {
         padding: 8px;
     }
 
-    /* no absolute offsets needed when stacked */
     .theme-switch {
         right: auto;
     }
 }
 
+/* Enhanced theme select (single definition, touch-friendly) */
 .theme-switch select {
     appearance: none;
     background: #111;
     color: var(--text);
     border: 1px solid rgba(var(--crt-glow-rgb), 0.12);
-    padding: 6px 8px;
+    padding: 8px 10px;
+    min-height: 40px;
     border-radius: 8px;
     font-family: var(--font);
-    font-size: 0.82rem;
+    font-size: 0.88rem;
     cursor: pointer;
     box-shadow: 0 0 8px rgba(var(--crt-glow-rgb), 0.06);
 }
 
-/* Buttons */
-.lang-btn {
-    appearance: none;
-    border: none;
-    background: transparent;
-    color: inherit;
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 0.85rem;
-    line-height: 1;
-}
-
+/* Active button style */
 .lang-btn.active {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.18));
     color: var(--text);
@@ -260,24 +246,47 @@ footer {
     text-align: center;
     font-size: 0.95rem;
     color: var(--text);
-    /* use theme color */
     font-family: var(--font);
-    /* ensure monospace font */
     opacity: 0.95;
     padding: 0.5em;
 }
 
-/* Responsive tweaks */
-@media (max-width: 520px) {
+/* Buttons - increased tappable area for mobile (single definition) */
+.lang-btn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: inherit;
+    padding: 8px 12px;
+    min-height: 40px;
+    min-width: 44px;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+/* header becomes a row on wider screens, stays stacked on small */
+@media (min-width: 640px) {
+    header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
     header h1 {
-        font-size: 1.25rem;
+        font-size: 3rem;
+        text-align: left;
+    }
+
+    .lang-switch,
+    .theme-switch {
+        margin-top: 0;
     }
 
     .content {
-        padding: 8px;
-    }
-
-    .theme-switch {
-        right: 112px;
+        text-align: left;
     }
 }
